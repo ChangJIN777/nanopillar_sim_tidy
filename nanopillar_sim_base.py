@@ -71,7 +71,6 @@ class nanopillar():
         # t start for apodization 
         self.t_start = 5e-13
 
-
     def setup_sim(self):
         # define the substrate
         bulk_substrate = td.Structure(
@@ -79,7 +78,7 @@ class nanopillar():
                 center=[0, 0, -self.bulk_thickness/2],
                 size=[td.inf, td.inf, self.bulk_thickness],
             ),
-            medium=SiO2
+            medium=Si
         )
 
         # define the nanopillar structure 
@@ -205,6 +204,9 @@ class nanopillar():
     def set_dataFileName(self,new_dataFileName):
         self.file_name = new_dataFileName
 
+    def set_dataFolderName(self,new_path):
+        self.data_path = new_path
+
     def getGridSpace(self,x_center=0,y_center=0,z_center=0,size_x = 4,size_y = 0.6,size_z = 0.8,
                         dlX = 0.01,dlY = 0.01,dlZ = 0.01,
                         minStepsPerWl = 10):
@@ -249,7 +251,7 @@ class nanopillar():
                                     top_monitor,
                                     bottom_monitor])
         data_summary = data_summary.T
-        full_path_name = self.data_path + 'nanopillar_diameter_%.0fnm.cvs'%(self.W)
+        full_path_name = self.data_path + 'nanopillar_diameter_%.0fnm.csv'%(self.W)
         # adding the headline 
         headline = "freq,top_monitor,bottom_monitor"
         rows = ["{},{},{}".format(i, j, k) for i, j, k in data_summary]
@@ -257,3 +259,6 @@ class nanopillar():
         text = headline + "\n" + text
         with open(full_path_name,'w') as f:
             f.write(text)
+
+    def set_bulk_Si_thickness(self,new_thickness):
+        self.bulk_Si_thickness = new_thickness
